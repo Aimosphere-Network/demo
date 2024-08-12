@@ -1,0 +1,177 @@
+services:
+  node-alice:
+    ports:
+      - "9944:9944"
+      - "9615:9615"
+    image: aimosphere/airo
+    container_name: node-alice
+    networks:
+      demo_net:
+        ipv4_address: 172.30.1.1
+    command:
+      - "--node-key"
+      - "0000000000000000000000000000000000000000000000000000000000000001"
+      - "--base-path"
+      - "/tmp/alice"
+      - "--chain=local"
+      - "--port"
+      - "30333"
+      - "--validator"
+      - "--alice"
+      - "--bootnodes"
+      - "/dns/node-bob/tcp/30333/p2p/12D3KooWHdiAxVd8uMQR1hGWXccidmfCwLqcMpGwR6QcTP6QRMuD"
+      - "--unsafe-rpc-external"
+#      - "--log"
+#      - "sub-libp2p=trace"
+      - "--no-telemetry"
+      - "--rpc-cors"
+      - "all"
+      - "--prometheus-external"
+
+  node-bob:
+    image: aimosphere/airo
+    container_name: node-bob
+    ports:
+      - "9945:9944"
+      - "9616:9615"
+    networks:
+      demo_net:
+        ipv4_address: 172.30.1.2
+    command:
+      - "--node-key"
+      - "0000000000000000000000000000000000000000000000000000000000000002"
+      - "--base-path"
+      - "/tmp/bob"
+      - "--chain=local"
+      - "--port"
+      - "30333"
+      - "--validator"
+      - "--bob"
+      - "--bootnodes"
+      - "/dns/node-alice/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp"
+      - "--no-telemetry"
+      - "--rpc-cors"
+      - "all"
+      - "--unsafe-rpc-external"
+#      - "--log"
+#      - "sub-libp2p=trace"
+      - "--prometheus-external"
+
+  node-charlie:
+    image: aimosphere/airo
+    container_name: node-charlie
+    ports:
+      - "9946:9944"
+      - "9617:9615"
+    networks:
+      demo_net:
+        ipv4_address: 172.30.1.3
+    command:
+      - "--node-key"
+      - "0000000000000000000000000000000000000000000000000000000000000003"
+      - "--base-path"
+      - "/tmp/charlie"
+      - "--chain=local"
+      - "--port"
+      - "30333"
+      - "--validator"
+      - "--charlie"
+      - "--bootnodes"
+      - "/dns/node-alice/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp"
+      - "--no-telemetry"
+      - "--rpc-cors"
+      - "all"
+      - "--unsafe-rpc-external"
+#      - "--log"
+#      - "sub-libp2p=trace"
+      - "--prometheus-external"
+
+  chain-health:
+    image: aimosphere/chain-health
+    container_name: chain-health
+    networks:
+      demo_net:
+        ipv4_address: 172.30.1.255
+    environment:
+      - WSHE_NODE_RPC_URLS=ws://node-alice:9944,ws://node-bob:9944,ws://node-charlie:9944
+    depends_on:
+      node-alice:
+        condition: service_started
+      node-bob:
+        condition: service_started
+      node-charlie:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://chain-health:8001/health/readiness"]
+      interval: 30s
+      timeout: 30s
+      retries: 10
+      start_period: 15s
+      start_interval: 5s
+
+
+  cog-hello-world:
+    image: cog-hello-world
+    container_name: cog-hello-world
+    networks:
+      demo_net:
+        ipv4_address: 172.30.2.1
+
+  wingman-bob:
+    image: aimosphere/wingman
+    container_name: wingman-bob
+    ports:
+      - "8000:8000"
+    networks:
+      demo_net:
+        ipv4_address: 172.30.3.1
+    environment:
+      - AW_PORT=8000
+      - AIRO_NODE=ws://node-bob:9944
+      - AIRO_SURI=//Bob
+    depends_on:
+      chain-health:
+        condition: service_healthy
+      cog-hello-world:
+        condition: service_started
+
+  wingman-charlie:
+    image: aimosphere/wingman
+    container_name: wingman-charlie
+    ports:
+      - "8001:8000"
+    networks:
+      demo_net:
+        ipv4_address: 172.30.3.2
+    environment:
+      - AW_PORT=8000
+      - AIRO_NODE=ws://node-charlie:9944
+      - AIRO_SURI=//Charlie
+    depends_on:
+      chain-health:
+        condition: service_healthy
+      cog-hello-world:
+        condition: service_started
+
+  cockpit:
+    image: aimosphere/cockpit
+    container_name: cockpit
+    ports:
+      - "8080:80"
+    networks:
+      demo_net:
+        ipv4_address: 172.30.3.255
+    environment:
+      - REACT_APP_PROVIDER_SOCKET=ws://127.0.0.1:9944
+    depends_on:
+      wingman-bob:
+        condition: service_started
+      wingman-charlie:
+        condition: service_started
+
+networks:
+  demo_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.0.0/16
