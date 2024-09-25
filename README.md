@@ -7,9 +7,11 @@ The demo project runs the aimosphere network in the following configuration:
 - charlie: validator, provider
 
 ```mermaid
-flowchart TD
+flowchart LR
     CP[cockpit] --- A{node-alice}
-    A ---|chain| B{node-bob} & C{node-charlie}
+    A ---|chain|B{node-bob}     
+    B ---|chain|C{node-charlie}
+    C ---|chain|A
     subgraph charlie
     C --- WC[wingman-charlie]
     end
@@ -18,6 +20,7 @@ flowchart TD
     end
     subgraph cog
     CHW(cog-hello-world)
+    CR(cog-resnet)
     end   
     charlie & bob --- cog 
     A & B & C -.- HC((chain-health))
@@ -74,3 +77,7 @@ It will start all the required containers.
 To access the cockpit, go to [http://localhost:8080](http://localhost:8080). By default, it is attached to `node-alice`.
 
 Bob's wingman UI (swagger) is available at [http://localhost:8000/swagger-ui/](http://localhost:8000/swagger-ui/) and Charlie's at [http://localhost:8001/swagger-ui/](http://localhost:8001/swagger-ui/)
+
+Current model ids supported:
+ - hello-world
+ - resnet
