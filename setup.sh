@@ -4,7 +4,8 @@ curl -X 'PUT' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
-  "price_per_request": 100
+  "price_per_request": 10000,
+  "url": "http://cog-hello-world:5000"
 }'
 
 curl -X 'PUT' \
@@ -12,7 +13,8 @@ curl -X 'PUT' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
-  "price_per_request": 200
+  "price_per_request": 20000,
+  "url": "http://cog-resnet:5000"
 }'
 
 curl -X 'PUT' \
@@ -20,7 +22,8 @@ curl -X 'PUT' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
-  "price_per_request": 300
+  "price_per_request": 30000,
+  "url": "http://cog-hello-world:5000"
 }'
 
 curl -X 'PUT' \
@@ -28,7 +31,8 @@ curl -X 'PUT' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
-  "price_per_request": 100
+  "price_per_request": 10000,
+  "url": "http://cog-resnet:5000"
 }'
 
 curl -X 'POST' \
@@ -59,3 +63,7 @@ curl -X 'POST' \
     "0x415c5b6ebf7beeb13c7e4c46b19e6466be41df527a9d9f4879f53b347dda9790"
   ]
 }'
+
+cd setup
+cargo run
+

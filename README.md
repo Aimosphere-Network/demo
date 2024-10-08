@@ -78,6 +78,14 @@ To access the cockpit, go to [http://localhost:8080](http://localhost:8080). By 
 
 Bob's wingman UI (swagger) is available at [http://localhost:8000/swagger-ui/](http://localhost:8000/swagger-ui/) and Charlie's at [http://localhost:8001/swagger-ui/](http://localhost:8001/swagger-ui/)
 
-Current model ids supported:
- - hello-world
- - resnet
+## setup demo
+
+To setup the demo, execute the following command in the root directory of the project
+```sh
+sh setup.sh
+```
+This will configure both wingmen, test the dx network and create NFTs for currently supported models owned by `Dave`.
+
+### Currently supported models (model ids):
+ - hello-world (0xf97fc2fdeffdaacdf4c3f35de1bb9c86faa021aa6d3e4d63fb2f910dac43198a)
+ - resnet (0xa8a8481b033d25fb3d78e51b679669781ec021dc2bbc719918c702f8ada5c844)

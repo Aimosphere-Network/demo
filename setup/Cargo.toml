@@ -1,0 +1,9 @@
+[package]
+name = "setup"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+subxt = "0.37"
+subxt-signer = "0.37"
+tokio = { version = "1", features = ["full"] }
