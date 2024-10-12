@@ -91,4 +91,4 @@ This will configure both wingmen, test the dx network and create NFTs for curren
 ### Currently supported models (model ids):
  - hello-world (0xf97fc2fdeffdaacdf4c3f35de1bb9c86faa021aa6d3e4d63fb2f910dac43198a)
  - resnet (0xa8a8481b033d25fb3d78e51b679669781ec021dc2bbc719918c702f8ada5c844)
- - health
+ - health (0x11d53cf38f52c62d141b2cfc339a6b73a5b4a840d2c9db04dedf1920c3ec22ed)
