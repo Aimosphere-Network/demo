@@ -133,6 +133,20 @@ services:
       demo_net:
         ipv4_address: 172.30.2.2
 
+  cog-health-client:
+    image: cog-health-client
+    container_name: cog-health-client
+    networks:
+      demo_net:
+        ipv4_address: 172.30.2.3
+
+  cog-health-server:
+    image: cog-health-server
+    container_name: cog-health-server
+    networks:
+      demo_net:
+        ipv4_address: 172.30.2.4
+
   wingman-bob:
     image: aimosphere/wingman
     container_name: wingman-bob

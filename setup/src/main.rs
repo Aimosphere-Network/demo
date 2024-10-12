@@ -61,6 +61,7 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
 
     mint_model(&client, "hello-world", &owner, &signer).await?;
     mint_model(&client, "resnet", &owner, &signer).await?;
+    mint_model(&client, "health", &owner, &signer).await?;
 
     Ok(())
 }

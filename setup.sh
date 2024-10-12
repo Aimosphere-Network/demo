@@ -1,4 +1,6 @@
 #!/bin/sh
+
+echo Setup wingman-bob
 curl -X 'PUT' \
   'http://localhost:8000/v1/models/hello-world' \
   -H 'accept: */*' \
@@ -18,6 +20,16 @@ curl -X 'PUT' \
 }'
 
 curl -X 'PUT' \
+  'http://localhost:8000/v1/models/health' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "price_per_request": 30000,
+  "url": "http://cog-health-server:5000"
+}'
+
+echo Setup wingman-charlie
+curl -X 'PUT' \
   'http://localhost:8001/v1/models/hello-world' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
@@ -35,6 +47,16 @@ curl -X 'PUT' \
   "url": "http://cog-resnet:5000"
 }'
 
+curl -X 'PUT' \
+  'http://localhost:8001/v1/models/health' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "price_per_request": 40000,
+  "url": "http://cog-health-server:5000"
+}'
+
+echo Test Dx network
 curl -X 'POST' \
   'http://localhost:9944' \
   -H 'accept: */*' \
@@ -64,6 +86,6 @@ curl -X 'POST' \
   ]
 }'
 
-cd setup
-cargo run
+echo Setup blockchain network
+cd setup && cargo run
 
