@@ -1,3 +1,4 @@
+use std::env;
 use std::error::Error;
 use subxt::{
     config::{
@@ -35,7 +36,9 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
     let owner = dev::dave();
     let signer = dev::alice();
 
-    let client = Client::from_insecure_url("ws://127.0.0.1:9944").await?;
+    let host = env::args().nth(1).unwrap_or("127.0.0.1".to_string());
+    println!("Connecting to {}", host);
+    let client = Client::from_insecure_url(format!("ws://{host}:9944")).await?;
     println!("Creating NFT collection");
     let config = CollectionConfig {
         settings: BitFlags1(0, Default::default()),

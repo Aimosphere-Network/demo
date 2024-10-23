@@ -1,11 +1,8 @@
 #!/bin/sh
 
-host=${1:-localhost}
-echo Setting up host: "$host"
-
 echo Setup wingman-bob
 curl -X 'PUT' \
-  "http://$host:8000/v1/models/hello-world" \
+  'http://localhost:8000/v1/models/hello-world' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -14,7 +11,7 @@ curl -X 'PUT' \
 }'
 
 curl -X 'PUT' \
-  "http://$host:8000/v1/models/resnet" \
+  'http://localhost:8000/v1/models/resnet' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -23,7 +20,7 @@ curl -X 'PUT' \
 }'
 
 curl -X 'PUT' \
-  "http://$host:8000/v1/models/health" \
+  'http://localhost:8000/v1/models/health' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -33,7 +30,7 @@ curl -X 'PUT' \
 
 echo Setup wingman-charlie
 curl -X 'PUT' \
-  "http://$host:8001/v1/models/hello-world" \
+  'http://localhost:8001/v1/models/hello-world' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -42,7 +39,7 @@ curl -X 'PUT' \
 }'
 
 curl -X 'PUT' \
-  "http://$host:8001/v1/models/resnet" \
+  'http://localhost:8001/v1/models/resnet' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -51,7 +48,7 @@ curl -X 'PUT' \
 }'
 
 curl -X 'PUT' \
-  "http://$host:8001/v1/models/health" \
+  'http://localhost:8001/v1/models/health' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -61,10 +58,9 @@ curl -X 'PUT' \
 
 echo Test Dx network
 curl -X 'POST' \
-  "http://$host:9944" \
+  'http://localhost:9944' \
   -H 'accept: */*' \
-  -H 'Content-Type: application/json' \    let host = env::args().nth(1).unwrap_or("127.0.0.1".to_string());
-    println!("Connecting to {}", host);
+  -H 'Content-Type: application/json' \
   -d '{
   "id": 1,
   "jsonrpc": "2.0",
@@ -78,7 +74,7 @@ curl -X 'POST' \
 sleep 5s
 
 curl -X 'POST' \
-  "http://$host:9944" \
+  'http://localhost:9944' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -91,5 +87,5 @@ curl -X 'POST' \
 }'
 
 echo Setup blockchain network
-cd setup && cargo run -- "$host"
+cd setup && cargo run
 
