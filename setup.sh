@@ -63,8 +63,7 @@ echo Test Dx network
 curl -X 'POST' \
   "http://$host:9944" \
   -H 'accept: */*' \
-  -H 'Content-Type: application/json' \    let host = env::args().nth(1).unwrap_or("127.0.0.1".to_string());
-    println!("Connecting to {}", host);
+  -H 'Content-Type: application/json' \
   -d '{
   "id": 1,
   "jsonrpc": "2.0",

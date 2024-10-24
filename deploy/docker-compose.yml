@@ -81,7 +81,7 @@ services:
     environment:
       - AW_PORT=8000
       - AIRO_NODE=ws://node:9944
-      - AIRO_SURI=//Bob
+      - AIRO_SURI=//Charlie
     depends_on:
       node:
         condition: service_started
